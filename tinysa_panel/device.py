@@ -25,6 +25,7 @@ except ImportError:  # pragma: no cover
     serial = None
 
 TINYSA_VID, TINYSA_PID = 0x0483, 0x5740
+TINYSA_ULTRA_VID, TINYSA_ULTRA_PID = 0x1781, 0x0A44
 PROMPT = b"ch> "
 SIM_PORT = "Simulator"
 
@@ -42,7 +43,7 @@ def list_ports():
     if serial is None:
         return out
     for p in serial.tools.list_ports.comports():
-        is_t = (p.vid == TINYSA_VID and p.pid == TINYSA_PID)
+        is_t = (p.vid == TINYSA_VID and p.pid == TINYSA_PID) or (p.vid == TINYSA_ULTRA_VID and p.pid == TINYSA_ULTRA_PID)  
         desc = p.description or ""
         out.append((p.device, desc, is_t))
     out.sort(key=lambda x: (not x[2], x[0]))
